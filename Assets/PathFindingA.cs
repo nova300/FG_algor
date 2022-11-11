@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class PathFindingA : MonoBehaviour
 {
+    [SerializeField] bool manhattanDist, manhattanPath;
     [SerializeField] List<Vector2> path;
     [SerializeField] Transform startT, goalT;
     [SerializeField] float time;
+    [SerializeField] int poisions, nodes;
     HashSet<Vector2Int> closedPos = new HashSet<Vector2Int>();
     List<Node> openNodes = new List<Node>();
     List<Node> closedNodes = new List<Node>();
     Node currentNode;
     Vector2Int goalPos;
     Vector2Int startPos;
-    bool manhattan, recalcNextFrame;
     float timeS;
 
     [ContextMenu("MakePath")] public void MakePath()
@@ -22,45 +23,25 @@ public class PathFindingA : MonoBehaviour
         goalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
         path.Clear();
         path = A_Star(startPos, goalPos);
-    }
-    [ContextMenu("MakePathNormal")] public void MakePathNormal()
-    {
-        manhattan = false;
-        MakePath();
-    }
+        time = (Time.realtimeSinceStartup - timeS);
+        poisions = closedPos.Count;
+        nodes = closedNodes.Count;
 
-    [ContextMenu("MakePathManhattan")] public void MakePathManhattan()
-    {
-        manhattan = true;
-        MakePath();
     }
 
     void OnDrawGizmos()
     {
-        if (Time.realtimeSinceStartup - timeS > 1f)
-        {
-            timeS = Time.realtimeSinceStartup;
-            if (recalcNextFrame)
-            {
-                MakePath();
-                recalcNextFrame = false;
-                return;
-            }
-        }
 
+        Vector2Int deltaStartPos = new Vector2Int(Mathf.RoundToInt(startT.position.x) ,Mathf.RoundToInt(startT.position.y));
+        Vector2Int deltaGoalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
+        if (deltaStartPos != startPos || deltaGoalPos != goalPos)
+        {
+            MakePath();
+        }
         if (path.Count < 1)
         {
-            recalcNextFrame = true;
             return;
         }
-
-        startPos = new Vector2Int(Mathf.RoundToInt(startT.position.x) ,Mathf.RoundToInt(startT.position.y));
-        goalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
-        if (path[0] != startPos || path[path.Count - 1] != goalPos)
-        {
-            recalcNextFrame = true;
-        }
-
         Gizmos.color = Color.red;
         for (int i = 1; i < path.Count; i++)
         {
@@ -71,15 +52,16 @@ public class PathFindingA : MonoBehaviour
 
     public List<Vector2> A_Star(Vector2Int start, Vector2Int goal)
     {
+        timeS = Time.realtimeSinceStartup;
         openNodes.Clear();
         closedNodes.Clear();
         closedPos.Clear();
 
-        openNodes.Add(new Node(start, 0, Vector2.Distance(start, goal)));
+        openNodes.Add(new Node(start, 0, Dist(start, goal)));
 
 
         while (openNodes.Count > 0)
-        {
+        {    
             currentNode = openNodes[0];
             for (int i = 0; i < openNodes.Count; i++)
             {
@@ -98,7 +80,7 @@ public class PathFindingA : MonoBehaviour
                 return recordPath(closedNodes[0], currentNode);
             }
 
-            if (currentNode.h > Vector2.Distance(start, goal) * 5)
+            if (currentNode.h > Dist(start, goal) * 2)
             {
                 return new List<Vector2>();
             }
@@ -118,7 +100,7 @@ public class PathFindingA : MonoBehaviour
                 }
 
                 Node nextStepNode = openNodes.Find(Node => Node.pos == nextStep[i]);
-                float nextStepG = currentNode.g + Vector2.Distance(nextStep[i], currentNode.pos);
+                float nextStepG = currentNode.g + Dist(nextStep[i], currentNode.pos);
 
                 if (nextStepNode != null)
                 {
@@ -126,7 +108,7 @@ public class PathFindingA : MonoBehaviour
                         nextStepNode.Set(nextStepG, currentNode);
                     }
                 } else {
-                    openNodes.Add(new Node(nextStep[i], nextStepG, Vector2.Distance(nextStep[i], goal), currentNode));
+                    openNodes.Add(new Node(nextStep[i], nextStepG, Dist(nextStep[i], goal), currentNode));
                 }
 
                 
@@ -146,7 +128,7 @@ public class PathFindingA : MonoBehaviour
 
     public Vector2Int[] GetNextStep(Vector2Int pos)
     {
-        if (manhattan)
+        if (manhattanPath)
         {
             return new[]{
             pos + Vector2Int.up,
@@ -180,6 +162,15 @@ public class PathFindingA : MonoBehaviour
         path.Add(current.pos);
         path.Reverse();
         return path;
+    }
+
+    public float Dist(Vector2Int a, Vector2Int b)
+    {
+        if (manhattanDist)
+        {
+            return Mathf.Abs(a.x-b.x) + Mathf.Abs(a.y-b.y);
+        }
+        return Vector2Int.Distance(a, b);
     }
 
 
