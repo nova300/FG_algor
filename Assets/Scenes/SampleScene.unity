@@ -343,6 +343,171 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1354052017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354052018}
+  m_Layer: 0
+  m_Name: Goal
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1354052018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354052017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -42.4, y: 47.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1391061366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1391061367}
+  - component: {fileID: 1391061368}
+  m_Layer: 0
+  m_Name: Start
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1391061367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391061366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1391061368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391061366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a48b4c0939800ba41881910c770f140f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path:
+  - {x: -1, y: 0}
+  - {x: -1, y: 1}
+  - {x: -1, y: 2}
+  - {x: -1, y: 3}
+  - {x: -1, y: 4}
+  - {x: -1, y: 5}
+  - {x: -1, y: 6}
+  - {x: -1, y: 7}
+  - {x: -2, y: 7}
+  - {x: -2, y: 8}
+  - {x: -3, y: 8}
+  - {x: -3, y: 9}
+  - {x: -4, y: 9}
+  - {x: -4, y: 10}
+  - {x: -5, y: 10}
+  - {x: -5, y: 11}
+  - {x: -6, y: 11}
+  - {x: -6, y: 12}
+  - {x: -7, y: 12}
+  - {x: -7, y: 13}
+  - {x: -8, y: 13}
+  - {x: -8, y: 14}
+  - {x: -9, y: 14}
+  - {x: -9, y: 15}
+  - {x: -10, y: 15}
+  - {x: -10, y: 16}
+  - {x: -11, y: 16}
+  - {x: -11, y: 17}
+  - {x: -12, y: 17}
+  - {x: -12, y: 18}
+  - {x: -13, y: 18}
+  - {x: -13, y: 19}
+  - {x: -14, y: 19}
+  - {x: -14, y: 20}
+  - {x: -15, y: 20}
+  - {x: -15, y: 21}
+  - {x: -16, y: 21}
+  - {x: -16, y: 22}
+  - {x: -17, y: 22}
+  - {x: -17, y: 23}
+  - {x: -18, y: 23}
+  - {x: -18, y: 24}
+  - {x: -19, y: 24}
+  - {x: -19, y: 25}
+  - {x: -20, y: 25}
+  - {x: -20, y: 26}
+  - {x: -21, y: 26}
+  - {x: -21, y: 27}
+  - {x: -22, y: 27}
+  - {x: -22, y: 28}
+  - {x: -23, y: 28}
+  - {x: -23, y: 29}
+  - {x: -24, y: 29}
+  - {x: -24, y: 30}
+  - {x: -25, y: 30}
+  - {x: -25, y: 31}
+  - {x: -26, y: 31}
+  - {x: -26, y: 32}
+  - {x: -27, y: 32}
+  - {x: -27, y: 33}
+  - {x: -28, y: 33}
+  - {x: -28, y: 34}
+  - {x: -29, y: 34}
+  - {x: -29, y: 35}
+  - {x: -30, y: 35}
+  - {x: -30, y: 36}
+  - {x: -31, y: 36}
+  - {x: -31, y: 37}
+  - {x: -32, y: 37}
+  - {x: -32, y: 38}
+  - {x: -33, y: 38}
+  - {x: -33, y: 39}
+  - {x: -34, y: 39}
+  - {x: -34, y: 40}
+  - {x: -35, y: 40}
+  - {x: -35, y: 41}
+  - {x: -36, y: 41}
+  - {x: -36, y: 42}
+  - {x: -37, y: 42}
+  - {x: -37, y: 43}
+  - {x: -38, y: 43}
+  - {x: -38, y: 44}
+  - {x: -39, y: 44}
+  - {x: -39, y: 45}
+  - {x: -40, y: 45}
+  - {x: -40, y: 46}
+  - {x: -41, y: 46}
+  - {x: -41, y: 47}
+  - {x: -42, y: 47}
+  startT: {fileID: 1391061367}
+  goalT: {fileID: 1354052018}
 --- !u!1 &1957058672
 GameObject:
   m_ObjectHideFlags: 0
