@@ -6,40 +6,71 @@ public class PathFindingA : MonoBehaviour
 {
     [SerializeField] List<Vector2> path;
     [SerializeField] Transform startT, goalT;
+    [SerializeField] float time;
     HashSet<Vector2Int> closedPos = new HashSet<Vector2Int>();
     List<Node> openNodes = new List<Node>();
     List<Node> closedNodes = new List<Node>();
     Node currentNode;
     Vector2Int goalPos;
     Vector2Int startPos;
-
+    bool manhattan, recalcNextFrame;
+    float timeS;
 
     [ContextMenu("MakePath")] public void MakePath()
     {
-        
+        startPos = new Vector2Int(Mathf.RoundToInt(startT.position.x) ,Mathf.RoundToInt(startT.position.y));
+        goalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
         path.Clear();
         path = A_Star(startPos, goalPos);
+    }
+    [ContextMenu("MakePathNormal")] public void MakePathNormal()
+    {
+        manhattan = false;
+        MakePath();
+    }
+
+    [ContextMenu("MakePathManhattan")] public void MakePathManhattan()
+    {
+        manhattan = true;
+        MakePath();
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        for (int i = 1; i < path.Count; i++)
+        if (Time.realtimeSinceStartup - timeS > 1f)
         {
-            Gizmos.DrawLine(path[i], path[i - 1]);
+            timeS = Time.realtimeSinceStartup;
+            if (recalcNextFrame)
+            {
+                MakePath();
+                recalcNextFrame = false;
+                return;
+            }
         }
+
+        if (path.Count < 1)
+        {
+            recalcNextFrame = true;
+            return;
+        }
+
         startPos = new Vector2Int(Mathf.RoundToInt(startT.position.x) ,Mathf.RoundToInt(startT.position.y));
         goalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
         if (path[0] != startPos || path[path.Count - 1] != goalPos)
         {
-            MakePath();
+            recalcNextFrame = true;
+        }
+
+        Gizmos.color = Color.red;
+        for (int i = 1; i < path.Count; i++)
+        {
+            Gizmos.DrawLine(path[i], path[i - 1]);
         }
     }
     
 
     public List<Vector2> A_Star(Vector2Int start, Vector2Int goal)
     {
-        
         openNodes.Clear();
         closedNodes.Clear();
         closedPos.Clear();
@@ -66,6 +97,12 @@ public class PathFindingA : MonoBehaviour
             {
                 return recordPath(closedNodes[0], currentNode);
             }
+
+            if (currentNode.h > Vector2.Distance(start, goal) * 5)
+            {
+                return new List<Vector2>();
+            }
+            
 
             Vector2Int[] nextStep = GetNextStep(currentNode.pos);
 
@@ -95,7 +132,7 @@ public class PathFindingA : MonoBehaviour
                 
             }
         }
-        return null;
+        return new List<Vector2>();
     }
 
     public bool CheckCollision(Vector2Int pos)
@@ -109,11 +146,24 @@ public class PathFindingA : MonoBehaviour
 
     public Vector2Int[] GetNextStep(Vector2Int pos)
     {
-        return new[]{
+        if (manhattan)
+        {
+            return new[]{
             pos + Vector2Int.up,
             pos + Vector2Int.down,
             pos + Vector2Int.left,
             pos + Vector2Int.right
+            };
+        }
+        return new[]{
+            pos + Vector2Int.up,
+            pos + Vector2Int.down,
+            pos + Vector2Int.left,
+            pos + Vector2Int.right,
+            pos + Vector2Int.up + Vector2Int.left,
+            pos + Vector2Int.up + Vector2Int.right,
+            pos + Vector2Int.down + Vector2Int.left,
+            pos + Vector2Int.down + Vector2Int.right
         };
     }
 
