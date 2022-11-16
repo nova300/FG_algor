@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using TMPro;
 
@@ -88,6 +87,12 @@ public class Wordle : MonoBehaviour
         }
         if (attempt >= letterLines.Count){
             ranOutOfAttemts = true;
+            Clear();
+                for(int j = 0; j < word.Length; j++)
+                {
+                    letterLines[attempt][j].color = Color.red;
+                    letterLines[attempt][j].SetText(word[j].ToString());
+            }
         }
         guess = "";
         
@@ -142,12 +147,7 @@ public class Wordle : MonoBehaviour
             }
             if (ranOutOfAttemts)
             {
-                Clear();
-                for(int j = 0; j < word.Length; j++)
-                {
-                    letterLines[attempt][j].color = Color.red;
-                    letterLines[attempt][j].SetText(word[j].ToString());
-                }
+                
             }
         }
     }
