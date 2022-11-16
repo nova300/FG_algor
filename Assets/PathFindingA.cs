@@ -49,6 +49,10 @@ public class PathFindingA : MonoBehaviour
         }
     }
     
+    void OnValidate()
+    {
+        MakePath();
+    }
 
     public List<Vector2> A_Star(Vector2Int start, Vector2Int goal)
     {
