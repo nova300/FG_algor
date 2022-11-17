@@ -61,8 +61,6 @@ public class Wordle : MonoBehaviour
         {
             return;
         }
-        ClearInputField();
-        
         results.Clear();
         for (int i = 0; i < word.Length; i++)
         {
@@ -94,7 +92,7 @@ public class Wordle : MonoBehaviour
                     letterLines[attempt][j].SetText(word[j].ToString());
             }
         }
-        guess = "";
+        ClearInputField();
         
     }
 
@@ -114,6 +112,7 @@ public class Wordle : MonoBehaviour
     public void ClearInputField()
     {
         guessPos = 0;
+        guess = "";
         for (int i = 0; i < inputField.Count; i++)
         {
             inputField[i].color = Color.white;
@@ -145,14 +144,10 @@ public class Wordle : MonoBehaviour
                 ranOutOfAttemts = false;
                 return;
             }
-            if (ranOutOfAttemts)
-            {
-                
-            }
         }
     }
 
-    [ContextMenu("Build word list")]public string UpdateWord()
+    public string UpdateWord()
     {
         string stringWordFile = wordFile.text;
         wordList = stringWordFile.Split('\n');
