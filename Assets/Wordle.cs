@@ -85,11 +85,11 @@ public class Wordle : MonoBehaviour
         }
         if (attempt >= letterLines.Count){
             ranOutOfAttemts = true;
-            Clear();
+            //Clear();
                 for(int j = 0; j < word.Length; j++)
                 {
-                    letterLines[attempt][j].color = Color.red;
-                    letterLines[attempt][j].SetText(word[j].ToString());
+                    letterLines[attempt-1][j].color = Color.red;
+                    letterLines[attempt-1][j].SetText(word[j].ToString());
             }
         }
         ClearInputField();
