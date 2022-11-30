@@ -5,7 +5,7 @@ using UnityEngine;
 public class PathFindingA : MonoBehaviour
 {
     [SerializeField] bool manhattanDist, manhattanPath;
-    [SerializeField] List<Vector2> path;
+    [SerializeField] public List<Vector2> path;
     [SerializeField] Transform startT, goalT;
     [SerializeField] float time;
     [SerializeField] int poisions, nodes;
@@ -16,6 +16,8 @@ public class PathFindingA : MonoBehaviour
     Vector2Int goalPos;
     Vector2Int startPos;
     float timeS;
+    public int pi = 1;
+    Vector2 currentTarget;
 
     [ContextMenu("MakePath")] public void MakePath()
     {
@@ -36,7 +38,7 @@ public class PathFindingA : MonoBehaviour
         Vector2Int deltaGoalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
         if (deltaStartPos != startPos || deltaGoalPos != goalPos)
         {
-            MakePath();
+            //MakePath();
         }
         if (path.Count < 1)
         {
@@ -51,8 +53,54 @@ public class PathFindingA : MonoBehaviour
     
     void OnValidate()
     {
-        MakePath();
+        //MakePath();
     }
+
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0)){
+            goalT.gameObject.SetActive(true);
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            goalT.localPosition = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), 0);
+            startPos = new Vector2Int(Mathf.RoundToInt(transform.position.x) ,Mathf.RoundToInt(transform.position.y));
+            goalPos = new Vector2Int(Mathf.RoundToInt(pos.x) ,Mathf.RoundToInt(pos.y));
+            path.Clear();
+            path = A_Star(startPos, goalPos);
+            pi = 1;
+            return;
+        }
+
+        
+
+        if (path.Count < 1)
+        {
+            pi = 1;
+            return;
+        }
+
+        if (pi >= path.Count)
+        {
+            path.Clear();
+            goalT.gameObject.SetActive(false);
+            return;
+        }
+
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), path[pi]) > 1)
+        {
+            transform.Translate((path[pi] - new Vector2(transform.position.x, transform.position.y)) * 10f * Time.deltaTime);
+        }
+        else
+        {
+            pi++;
+        }
+
+        
+
+        
+    }
+
+
+    
 
     public List<Vector2> A_Star(Vector2Int start, Vector2Int goal)
     {
