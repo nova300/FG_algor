@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Wordle.unity
+    guid: 9f60edb8c6d4b5741856945c833a759f
   m_configObjects: {}
