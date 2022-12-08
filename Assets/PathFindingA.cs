@@ -11,7 +11,6 @@ public class PathFindingA : MonoBehaviour
     [SerializeField] int poisions, nodes;
     HashSet<Vector2Int> closedPos = new HashSet<Vector2Int>();
     List<Node> openNodes = new List<Node>();
-    HashSet<Node> closedNodes = new HashSet<Node>();
     Node currentNode;
     Vector2Int goalPos;
     Vector2Int startPos;
@@ -27,7 +26,6 @@ public class PathFindingA : MonoBehaviour
         path = A_Star(startPos, goalPos);
         time = (Time.realtimeSinceStartup - timeS);
         poisions = closedPos.Count;
-        nodes = closedNodes.Count;
 
     }
 
@@ -105,7 +103,6 @@ public class PathFindingA : MonoBehaviour
     {
         timeS = Time.realtimeSinceStartup;
         openNodes.Clear();
-        closedNodes.Clear();
         closedPos.Clear();
 
         Node startNode = new Node(start, 0, Dist(start, goal));
@@ -124,7 +121,6 @@ public class PathFindingA : MonoBehaviour
             }
 
             openNodes.Remove(currentNode);
-            closedNodes.Add(currentNode);
             closedPos.Add(currentNode.pos);
 
             if (currentNode.pos == goal)
