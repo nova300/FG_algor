@@ -29,15 +29,15 @@ public class camera : MonoBehaviour
 
     void OnRenderObject()
     {
-        List<Vector2> path = pathFindingA.path;
+        Vector2[] path = pathFindingA.path;
         int pi = pathFindingA.pi;
-        if (path.Count < 1)
+        if (path == null)
         {
-            //return;
+            return;
         }
         GL.PushMatrix();
         mat.SetPass(0);
-        for (int i = pi; i < path.Count; i++)
+        for (int i = pi; i < path.Length; i++)
         {
             GL.Begin(GL.LINES);
             GL.Color(Color.red);

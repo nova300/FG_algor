@@ -5,13 +5,13 @@ using UnityEngine;
 public class PathFindingA : MonoBehaviour
 {
     [SerializeField] bool manhattanDist, manhattanPath;
-    [SerializeField] public List<Vector2> path;
+    [SerializeField] public Vector2[] path;
     [SerializeField] Transform startT, goalT;
     [SerializeField] float time;
     [SerializeField] int poisions, nodes;
     HashSet<Vector2Int> closedPos = new HashSet<Vector2Int>();
     List<Node> openNodes = new List<Node>();
-    List<Node> closedNodes = new List<Node>();
+    HashSet<Node> closedNodes = new HashSet<Node>();
     Node currentNode;
     Vector2Int goalPos;
     Vector2Int startPos;
@@ -23,7 +23,7 @@ public class PathFindingA : MonoBehaviour
     {
         startPos = new Vector2Int(Mathf.RoundToInt(startT.position.x) ,Mathf.RoundToInt(startT.position.y));
         goalPos = new Vector2Int(Mathf.RoundToInt(goalT.position.x) ,Mathf.RoundToInt(goalT.position.y));
-        path.Clear();
+        path = null;
         path = A_Star(startPos, goalPos);
         time = (Time.realtimeSinceStartup - timeS);
         poisions = closedPos.Count;
@@ -40,12 +40,12 @@ public class PathFindingA : MonoBehaviour
         {
             //MakePath();
         }
-        if (path.Count < 1)
+        if (path.Length < 1)
         {
             return;
         }
         Gizmos.color = Color.red;
-        for (int i = 1; i < path.Count; i++)
+        for (int i = 1; i < path.Length; i++)
         {
             Gizmos.DrawLine(path[i], path[i - 1]);
         }
@@ -64,23 +64,22 @@ public class PathFindingA : MonoBehaviour
             goalT.localPosition = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), 0);
             startPos = new Vector2Int(Mathf.RoundToInt(transform.position.x) ,Mathf.RoundToInt(transform.position.y));
             goalPos = new Vector2Int(Mathf.RoundToInt(pos.x) ,Mathf.RoundToInt(pos.y));
-            path.Clear();
+            path = null;
             path = A_Star(startPos, goalPos);
             pi = 1;
             return;
         }
-
         
 
-        if (path.Count < 1)
+        if (path == null)
         {
             pi = 1;
             return;
         }
 
-        if (pi >= path.Count)
+        if (pi >= path.Length)
         {
-            path.Clear();
+            path = null;
             goalT.gameObject.SetActive(false);
             return;
         }
@@ -102,14 +101,15 @@ public class PathFindingA : MonoBehaviour
 
     
 
-    public List<Vector2> A_Star(Vector2Int start, Vector2Int goal)
+    public Vector2[] A_Star(Vector2Int start, Vector2Int goal)
     {
         timeS = Time.realtimeSinceStartup;
         openNodes.Clear();
         closedNodes.Clear();
         closedPos.Clear();
 
-        openNodes.Add(new Node(start, 0, Dist(start, goal)));
+        Node startNode = new Node(start, 0, Dist(start, goal));
+        openNodes.Add(startNode);
 
 
         while (openNodes.Count > 0)
@@ -129,12 +129,12 @@ public class PathFindingA : MonoBehaviour
 
             if (currentNode.pos == goal)
             {
-                return recordPath(closedNodes[0], currentNode);
+                return recordPath(startNode, currentNode);
             }
 
             if (currentNode.h > Dist(start, goal) * 2)
             {
-                return new List<Vector2>();
+                return null;
             }
             
 
@@ -166,7 +166,7 @@ public class PathFindingA : MonoBehaviour
                 
             }
         }
-        return new List<Vector2>();
+        return null;
     }
 
     public bool CheckCollision(Vector2Int pos)
@@ -201,7 +201,7 @@ public class PathFindingA : MonoBehaviour
         };
     }
 
-    public List<Vector2> recordPath(Node firstNode, Node lastNode)
+    public Vector2[] recordPath(Node firstNode, Node lastNode)
     {
         List<Vector2> path = new List<Vector2>();
         Node current = lastNode;
@@ -213,7 +213,8 @@ public class PathFindingA : MonoBehaviour
         }
         path.Add(current.pos);
         path.Reverse();
-        return path;
+        Vector2[] result = path.ToArray();
+        return result;
     }
 
     public float Dist(Vector2Int a, Vector2Int b)
